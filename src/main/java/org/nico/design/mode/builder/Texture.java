@@ -1,4 +1,4 @@
-package org.nico.design.model.factory;
+package org.nico.design.mode.builder;
 
 /** 
  * 
@@ -6,7 +6,7 @@ package org.nico.design.model.factory;
  * @email ainililia@163.com
  */
 
-public abstract class Armament {
+public abstract class Texture {
 
 	public abstract String name();
 }

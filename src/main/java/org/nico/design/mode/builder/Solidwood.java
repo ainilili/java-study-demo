@@ -1,4 +1,4 @@
-package org.nico.design.model.factory;
+package org.nico.design.mode.builder;
 
 /** 
  * 
@@ -6,11 +6,11 @@ package org.nico.design.model.factory;
  * @email ainililia@163.com
  */
 
-public class Bomb extends Armament{
+public class Solidwood extends Texture{
 
 	@Override
 	public String name() {
-		return "bomb";
+		return "实木";
 	}
-	
+
 }

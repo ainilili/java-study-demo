@@ -1,4 +1,4 @@
-package org.nico.design.model.bridge;
+package org.nico.design.mode.bridge;
 
 /** 
  * 

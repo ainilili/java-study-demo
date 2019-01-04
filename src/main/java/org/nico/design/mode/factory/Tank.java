@@ -1,4 +1,4 @@
-package org.nico.design.model.factory;
+package org.nico.design.mode.factory;
 
 /** 
  * 
