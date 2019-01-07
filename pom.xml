@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.smallnico</groupId>
-	<artifactId>design-mode</artifactId>
+	<artifactId>java-study-demo</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-	<name>design-mode</name>
-	<description>design-mode</description>
+	<name>java-study-demo</name>
+	<description>java-study-demo</description>
 
 	<properties>
 		<java.version.source>1.8</java.version.source>
