@@ -6,15 +6,18 @@ public class BinaryTreeTest {
 
 	public static void main(String[] args) {
 		
-		BinaryTree bt = new BinaryTree(100, "Hello BinaryTree");
+		int count = 10;
+		BinaryTree bt = new BinaryTree(count/2, count/2);
 		
 		Random random = new Random();
-		int count = 1000;
-		while(count -- > 0) {
-			int index = random.nextInt(100000);
+		
+		int loop = count;
+		while(loop -- > 0) {
+			int index = random.nextInt(count);
 			bt.insert(index, index);
 		}
 		
 		System.out.println(bt);
 	}
+	
 }

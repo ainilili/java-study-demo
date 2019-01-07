@@ -1,7 +1,8 @@
 package org.nico.data.structure.tree;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class BinaryTree extends AbstractTree{
@@ -65,27 +66,78 @@ public class BinaryTree extends AbstractTree{
 	
 	@Override
 	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		List<Object> cache = new ArrayList<>(50);
 		Queue<Node> queue = new LinkedBlockingQueue<Node>();
 		queue.add(root);
 		
 		int depth = 0;
-		StringBuilder builder = new StringBuilder();
-		
+		int maxDepth = getMaxDepth();
 		while(! queue.isEmpty()) {
 			Node cur = queue.poll();
-			if(cur.left != null) queue.add(cur.left);
-			if(cur.right != null) queue.add(cur.right);
-			
-			if(depth != cur.depth) {
-				builder.append(System.lineSeparator());
-				depth = cur.depth;
+			if(cur.left != null) {
+				queue.add(cur.left);
+			}else if(cur.depth < maxDepth){
+				queue.add(new Node(0, '#', cur));
 			}
-			
-			builder.append("[" + cur.value + "] ");
-			
+			if(cur.right != null) {
+				queue.add(cur.right);
+			}else if(cur.depth < maxDepth){
+				queue.add(new Node(0, '#', cur));
+			}
+
+			if(depth != cur.depth) {
+				depth = cur.depth;
+				cache.add(depth);
+			}
+			cache.add(cur);
+		}
+		
+		for(int index = 0; index < cache.size(); index ++) {
+			Object o = cache.get(index);
+			if(o instanceof Integer) {
+				builder.append(System.lineSeparator());
+				builder.append(getOffset(depth - (Integer)o));
+			}else {
+				if(index == 0) {
+					builder.append(getOffset(depth));
+				}
+				builder.append(((Node)o).value);
+				builder.append(getOffset(depth - ((Node)o).depth + 1));
+			}
 		}
 		return builder.toString();
 	}
+	
+	public String getOffset(double height) {
+		StringBuilder builder = new StringBuilder();
+		int count = (int) Math.pow(2d, height) - 1;
+		while(count -- > 0) {
+			builder.append(" ");
+		}
+		return builder.toString();
+	}
+	
+	public int getMaxDepth() {
+		Queue<Node> queue = new LinkedBlockingQueue<Node>();
+		queue.add(root);
+		int depth = 0;
+		while(! queue.isEmpty()) {
+			Node cur = queue.poll();
+			if(cur.left != null) {
+				queue.add(cur.left);
+			}
+			if(cur.right != null) {
+				queue.add(cur.right);
+			}
+
+			if(depth != cur.depth) {
+				depth = cur.depth;
+			}
+		}
+		return depth;
+	}
+	
 	
 	public Object insert(int index, Object value, Node cur) {
 		if(index == cur.index) {
