@@ -26,25 +26,75 @@ public class BinaryTree extends AbstractTree{
 		if(target == null) {
 			return null;
 		}else {
-			if(target.isLeft) {
-				target.parent.left = target.right;
-				Node leftLoopStarter = target.left;
-				while(leftLoopStarter.left != null) {
-					leftLoopStarter = leftLoopStarter.left;
+			if(target.left == null && target.left == null) {
+				if(target.parent == null) {
+					throw new RuntimeException("再删就没了！");
+				}else {
+					if(target.isLeft) {
+						target.parent.left = null;
+					}else {
+						target.parent.right = null;
+					}
 				}
-				leftLoopStarter.left = target.left;
-				target = null; //help GC
-			}else {
-				target.parent.right = target.left;
-				Node rightLoopStarter = target.right;
-				while(rightLoopStarter.right != null) {
-					rightLoopStarter = rightLoopStarter.right;
+			}else if(target.left == null && target.right != null) {
+				if(target.parent == null) {
+					root = target.right;
+					target.right.parent = null;
+				}else {
+					if(target.isLeft) {
+						target.parent.left = target.right;
+					}else {
+						target.parent.right = target.right;
+					}
+					target.right.parent = target.parent;
 				}
-				rightLoopStarter.right = target.right;
+			}else if(target.left != null && target.right == null) {
+				if(target.parent == null) {
+					root = target.left;
+					target.left.parent = null;
+				}else {
+					if(target.isLeft) {
+						target.parent.left = target.left;
+					}else {
+						target.parent.right = target.left;
+					}
+					target.left.parent = target.parent;
+				}
+			}else if(target.left != null && target.right != null) {
+				if(target.parent == null) {
+					Node leftLoopStarter = target.right;
+					while(leftLoopStarter.left != null) {
+						leftLoopStarter = leftLoopStarter.left;
+					}
+					leftLoopStarter.left = target.left;
+					target.left.parent = leftLoopStarter;
+					root = target.right;
+					target.right.parent = null;
+				}else {
+					if(target.isLeft) {
+						target.parent.left = target.right;
+						target.right.parent = target.parent;
+						Node leftLoopStarter = target.right;
+						while(leftLoopStarter.left != null) {
+							leftLoopStarter = leftLoopStarter.left;
+						}
+						leftLoopStarter.left = target.left;
+						target.left.parent = leftLoopStarter;
+					}else {
+						target.parent.right = target.left;
+						target.left.parent = target.parent;
+						Node rightLoopStarter = target.left;
+						while(rightLoopStarter.right != null) {
+							rightLoopStarter = rightLoopStarter.right;
+						}
+						rightLoopStarter.right = target.right;
+						target.right.parent = rightLoopStarter;
+					}
+				}
 			}
 			Object value = target.value;
 			target = null; //help GC
-			size ++;
+			size --;
 			return value;
 		}
 	}
@@ -77,17 +127,17 @@ public class BinaryTree extends AbstractTree{
 			Node cur = queue.poll();
 			if(cur.left != null) {
 				queue.add(cur.left);
-			}else if(cur.depth < maxDepth){
+			}else if(cur.depth() < maxDepth){
 				queue.add(new Node(0, '#', cur));
 			}
 			if(cur.right != null) {
 				queue.add(cur.right);
-			}else if(cur.depth < maxDepth){
+			}else if(cur.depth() < maxDepth){
 				queue.add(new Node(0, '#', cur));
 			}
 
-			if(depth != cur.depth) {
-				depth = cur.depth;
+			if(depth != cur.depth()) {
+				depth = cur.depth();
 				cache.add(depth);
 			}
 			cache.add(cur);
@@ -103,7 +153,7 @@ public class BinaryTree extends AbstractTree{
 					builder.append(getOffset(depth));
 				}
 				builder.append(((Node)o).value);
-				builder.append(getOffset(depth - ((Node)o).depth + 1));
+				builder.append(getOffset(depth - ((Node)o).depth() + 1));
 			}
 		}
 		return builder.toString();
@@ -131,8 +181,8 @@ public class BinaryTree extends AbstractTree{
 				queue.add(cur.right);
 			}
 
-			if(depth != cur.depth) {
-				depth = cur.depth;
+			if(depth != cur.depth()) {
+				depth = cur.depth();
 			}
 		}
 		return depth;
@@ -187,8 +237,6 @@ public class BinaryTree extends AbstractTree{
 		
 		private int index;
 		
-		private int depth;
-		
 		private Object value;
 		
 		private boolean isLeft;
@@ -198,8 +246,17 @@ public class BinaryTree extends AbstractTree{
 			this.value = value;
 			if(parent != null) {
 				this.parent = parent;
-				this.depth = parent.depth + 1;
 			}
+		}
+		
+		public int depth() {
+			int depth = 0;
+			Node pre = this.parent;
+			while(pre != null) {
+				depth ++;
+				pre = pre.parent;
+			}
+			return depth;
 		}
 
 	}
