@@ -5,7 +5,7 @@ import java.util.Random;
 public class BinarySortTreeTest {
 
 	public static void main(String[] args) {
-		test1();
+		test3();
 	}
 
 	public static void test1() {
@@ -75,4 +75,41 @@ public class BinarySortTreeTest {
 		
 		System.out.println(bt);
 	}
+	
+	public static void test3() {
+		BinarySortTree bt = new BinarySortTree(8, 8);
+		bt.insert(4, 4);
+		bt.insert(2, 2);
+		bt.insert(3, 3);
+		bt.insert(1, 1);
+		bt.insert(6, 6);
+		bt.insert(5, 5);
+		bt.insert(7, 7);
+		bt.insert(12, 12);
+		bt.insert(10, 10);
+		bt.insert(11, 11);
+		bt.insert(16, 16);
+		bt.insert(14, 14);
+		bt.insert(17, 17);
+
+		System.out.println(bt);
+		
+		bt.remove(1);
+		System.out.println(bt);
+		
+		bt.remove(2);
+		System.out.println(bt);
+		
+		bt.remove(4);
+		System.out.println(bt);
+		
+		bt.remove(16);
+		System.out.println(bt);
+		
+		bt.remove(8);
+		System.out.println(bt);
+
+	}
+	
+	
 }
