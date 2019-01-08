@@ -1,6 +1,6 @@
 package org.nico.data.structure.tree;
 
-public abstract class AbstractTree {
+public abstract class AbstractBinaryTree {
 
 	public abstract Object insert(int index, Object value);
 	

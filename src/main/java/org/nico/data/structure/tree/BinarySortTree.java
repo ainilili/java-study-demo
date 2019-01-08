@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class BinaryTree extends AbstractTree{
-
+public class BinarySortTree extends AbstractBinaryTree{
+	
+	//root结点
 	private Node root;
 	
+	//size
 	private int size;
 	
-	public BinaryTree(int index, Object value) {
+	public BinarySortTree(int index, Object value) {
 		this.root = new Node(index, value, null);
+		this.size = 1;
 	}
 	
 	@Override
@@ -26,70 +29,28 @@ public class BinaryTree extends AbstractTree{
 		if(target == null) {
 			return null;
 		}else {
-			if(target.left == null && target.left == null) {
-				if(target.parent == null) {
+			Node n = target.right != null ? target.right : target.left;
+			
+			if(target.left != null && target.right != null) {
+				Node leftLoopStarter = n;
+				while(leftLoopStarter.left != null) {
+					leftLoopStarter = leftLoopStarter.left;
+				}
+				leftLoopStarter.setLeft(target.left);
+			}
+			
+			if(target.parent == null) {
+				if(target.left == null && target.right == null) {
 					throw new RuntimeException("再删就没了！");
 				}else {
-					if(target.isLeft) {
-						target.parent.left = null;
-					}else {
-						target.parent.right = null;
-					}
+					root = n;
+					n.parent = null;
 				}
-			}else if(target.left == null && target.right != null) {
-				if(target.parent == null) {
-					root = target.right;
-					target.right.parent = null;
+			}else {
+				if(target.isLeft) {
+					target.parent.setLeft(n);
 				}else {
-					if(target.isLeft) {
-						target.parent.left = target.right;
-					}else {
-						target.parent.right = target.right;
-					}
-					target.right.parent = target.parent;
-				}
-			}else if(target.left != null && target.right == null) {
-				if(target.parent == null) {
-					root = target.left;
-					target.left.parent = null;
-				}else {
-					if(target.isLeft) {
-						target.parent.left = target.left;
-					}else {
-						target.parent.right = target.left;
-					}
-					target.left.parent = target.parent;
-				}
-			}else if(target.left != null && target.right != null) {
-				if(target.parent == null) {
-					Node leftLoopStarter = target.right;
-					while(leftLoopStarter.left != null) {
-						leftLoopStarter = leftLoopStarter.left;
-					}
-					leftLoopStarter.left = target.left;
-					target.left.parent = leftLoopStarter;
-					root = target.right;
-					target.right.parent = null;
-				}else {
-					if(target.isLeft) {
-						target.parent.left = target.right;
-						target.right.parent = target.parent;
-						Node leftLoopStarter = target.right;
-						while(leftLoopStarter.left != null) {
-							leftLoopStarter = leftLoopStarter.left;
-						}
-						leftLoopStarter.left = target.left;
-						target.left.parent = leftLoopStarter;
-					}else {
-						target.parent.right = target.left;
-						target.left.parent = target.parent;
-						Node rightLoopStarter = target.left;
-						while(rightLoopStarter.right != null) {
-							rightLoopStarter = rightLoopStarter.right;
-						}
-						rightLoopStarter.right = target.right;
-						target.right.parent = rightLoopStarter;
-					}
+					target.parent.setRight(n);
 				}
 			}
 			Object value = target.value;
@@ -102,11 +63,7 @@ public class BinaryTree extends AbstractTree{
 	@Override
 	public Object get(int index) {
 		Node target = find(index, root);
-		if(target == null) {
-			return null;
-		}else {
-			return target.value;
-		}
+		return target == null ? null : target.value;
 	}
 	
 	@Override
@@ -190,55 +147,59 @@ public class BinaryTree extends AbstractTree{
 	
 	
 	public Object insert(int index, Object value, Node cur) {
-		if(index == cur.index) {
-			cur.value = value;
-		}else if(index < cur.index) {
-			if(null == cur.left) {
-				cur.left = new Node(index, value, cur);
-				cur.left.isLeft = true;
-				size ++;
+		while(true) {
+			if(cur.index == index) {
+				cur.value = value;
+				break;
 			}else {
-				insert(index, value, cur.left);
-			}
-		}else{
-			if(null == cur.right) {
-				cur.right = new Node(index, value, cur);
-				size ++;
-			}else {
-				insert(index, value, cur.right);
+				if(index < cur.index) {
+					if(null == cur.left) {
+						cur.left = new Node(index, value, cur);
+						cur.left.isLeft = true;
+						size ++;
+						break;
+					}else {
+						cur = cur.left;
+					}
+				}else{
+					if(null == cur.right) {
+						cur.right = new Node(index, value, cur);
+						size ++;
+						break;
+					}else {
+						cur = cur.right;
+					}
+				}
 			}
 		}
 		return value;
 	}
 	
 	public Node find(int index, Node cur) {
-		Node next = null;
-		if(index == cur.index) {
-			return cur;
-		}else if(index < cur.index) {
-			next = cur.left;
-		}else{
-			next = cur.right;
+		while(cur != null && cur.index != index) {
+			cur = index < cur.index ? cur.left : cur.right;
 		}
-		if(null == next) {
-			return null;
-		}else {
-			return find(index, next);
-		}
+		return cur;
 	}
 	
 	class Node{
 		
+		//左叶子结点
 		private Node left;
 		
+		//右叶子结点
 		private Node right;
 		
+		//父结点
 		private Node parent;
 		
+		//索引
 		private int index;
 		
+		//内容
 		private Object value;
 		
+		//该值为true意味着这个结点坐落于左边
 		private boolean isLeft;
 		
 		public Node(int index, Object value, Node parent) {
@@ -249,6 +210,9 @@ public class BinaryTree extends AbstractTree{
 			}
 		}
 		
+		/**
+		 * @return 该结点深度
+		 */
 		public int depth() {
 			int depth = 0;
 			Node pre = this.parent;
@@ -258,7 +222,29 @@ public class BinaryTree extends AbstractTree{
 			}
 			return depth;
 		}
-
+		
+		/**
+		 * 为左结点赋值
+		 * 
+		 * @param left 左结点
+		 */
+		public void setLeft(Node left) {
+			this.left = left;
+			if(left != null) {
+				this.left.parent = this;
+				this.left.isLeft = true;
+			}
+		}
+		
+		/**
+		 * 为右结点赋值
+		 * 
+		 * @param right 右结点
+		 */
+		public void setRight(Node right) {
+			this.right = right;
+			if(right != null) this.right.parent = this;
+		}
 	}
 
 }
