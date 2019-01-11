@@ -8,23 +8,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class BinarySortTree extends AbstractBinaryTree{
 	
 	//root结点
-	private Node root;
+	protected Node root;
 	
 	//size
-	private int size;
-	
-	public BinarySortTree(int index, Object value) {
-		this.root = new Node(index, value, null);
-		this.size = 1;
-	}
+	protected int size;
 	
 	@Override
-	public Object insert(int index, Object value) {
+	public Node insert(int index, Object value) {
 		return insert(index, value, root);
 	}
 	
 	@Override
-	public Object remove(int index) {
+	public Node remove(int index) {
 		//首先寻找该结点
 		Node target = find(index, root);
 		if(target == null) {
@@ -61,19 +56,22 @@ public class BinarySortTree extends AbstractBinaryTree{
 				}
 			}
 			size --;
-			return target.value;
+			return target;
 		}
 	}
 
 	@Override
-	public Object get(int index) {
-		Node target = find(index, root);
-		return target == null ? null : target.value;
+	public Node get(int index) {
+		return find(index, root);
 	}
 	
 	@Override
 	public int size() {
 		return this.size;
+	}
+	
+	public Node createNode(int index, Object value, Node parent) {
+		return new Node(index, value, parent);
 	}
 	
 	@Override
@@ -94,13 +92,13 @@ public class BinarySortTree extends AbstractBinaryTree{
 				queue.add(cur.left);
 			}else if(cur.depth() < maxDepth){
 				//填补空缺
-				queue.add(new Node(0, '#', cur));	
+				queue.add(createNode(0, '#', cur));	
 			}
 			if(cur.right != null) {
 				queue.add(cur.right);
 			}else if(cur.depth() < maxDepth){
 				//填补空缺
-				queue.add(new Node(0, '#', cur));	
+				queue.add(createNode(0, '#', cur));	
 			}
 			if(depth != cur.depth()) {
 				//深度切换，将高度保存
@@ -131,7 +129,7 @@ public class BinarySortTree extends AbstractBinaryTree{
 	 * @param height 当前结点高度 = 最大深度 - 当前结点深度
 	 * @return 首距或者两结点的间隔距离 
 	 */
-	public String getOffset(double height) {
+	protected String getOffset(double height) {
 		StringBuilder builder = new StringBuilder();
 		int count = (int) Math.pow(2d, height) - 1;
 		while(count -- > 0) {
@@ -143,7 +141,7 @@ public class BinarySortTree extends AbstractBinaryTree{
 	/**
 	 * @return 当前树的最大深度
 	 */
-	public int getMaxDepth() {
+	protected int getMaxDepth() {
 		Queue<Node> queue = new LinkedBlockingQueue<Node>();
 		queue.add(root);
 		int depth = 0;
@@ -157,17 +155,23 @@ public class BinarySortTree extends AbstractBinaryTree{
 	}
 	
 	
-	public Object insert(int index, Object value, Node cur) {
+	protected Node insert(int index, Object value, Node cur) {
+		Node newNode = null;
+		if(root == null) {
+			root = createNode(index, value, null);
+			return root;
+		}
 		while(true) {
 			if(cur.index == index) {
 				//命中则更新
 				cur.value = value;
+				newNode = cur;
 				break;
 			}else {
 				if(index < cur.index) {
 					if(null == cur.left) {
 						//无命中则添加
-						cur.left = new Node(index, value, cur);
+						cur.left = newNode = createNode(index, value, cur);
 						cur.left.isLeft = true;
 						size ++;
 						break;
@@ -178,7 +182,7 @@ public class BinarySortTree extends AbstractBinaryTree{
 				}else{
 					if(null == cur.right) {
 						//无命中则添加
-						cur.right = new Node(index, value, cur);
+						cur.right = newNode = createNode(index, value, cur);
 						size ++;
 						break;
 					}else {
@@ -188,79 +192,14 @@ public class BinarySortTree extends AbstractBinaryTree{
 				}
 			}
 		}
-		return value;
+		return newNode;
 	}
 	
-	public Node find(int index, Node cur) {
+	protected Node find(int index, Node cur) {
 		while(cur != null && cur.index != index) {
 			cur = index < cur.index ? cur.left : cur.right;
 		}
 		return cur;
 	}
 	
-	class Node{
-		
-		//左叶子结点
-		private Node left;
-		
-		//右叶子结点
-		private Node right;
-		
-		//父结点
-		private Node parent;
-		
-		//索引
-		private int index;
-		
-		//内容
-		private Object value;
-		
-		//该值为true意味着这个结点坐落于左边
-		private boolean isLeft;
-		
-		public Node(int index, Object value, Node parent) {
-			this.index = index;
-			this.value = value;
-			if(parent != null) {
-				this.parent = parent;
-			}
-		}
-		
-		/**
-		 * @return 该结点深度
-		 */
-		public int depth() {
-			int depth = 0;
-			Node pre = this.parent;
-			while(pre != null) {
-				depth ++;
-				pre = pre.parent;
-			}
-			return depth;
-		}
-		
-		/**
-		 * 为左结点赋值
-		 * 
-		 * @param left 左结点
-		 */
-		public void setLeft(Node left) {
-			this.left = left;
-			if(left != null) {
-				this.left.parent = this;
-				this.left.isLeft = true;
-			}
-		}
-		
-		/**
-		 * 为右结点赋值
-		 * 
-		 * @param right 右结点
-		 */
-		public void setRight(Node right) {
-			this.right = right;
-			if(right != null) this.right.parent = this;
-		}
-	}
-
 }

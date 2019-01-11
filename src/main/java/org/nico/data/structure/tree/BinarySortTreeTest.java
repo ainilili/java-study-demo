@@ -10,8 +10,7 @@ public class BinarySortTreeTest {
 
 	public static void test1() {
 		int count = 50;
-		int root = count/2;
-		BinarySortTree bt = new BinarySortTree(root, root);
+		BinarySortTree bt = new BinarySortTree();
 		Random random = new Random();
 
 		int loop = count;
@@ -41,7 +40,7 @@ public class BinarySortTreeTest {
 	public static void test2() {
 		int count = 10;
 		int root = count/2;
-		BinarySortTree bt = new BinarySortTree(root, root);
+		BinarySortTree bt = new BinarySortTree();
 
 		int loop = count;
 		while(loop -- > 0) {
@@ -77,7 +76,7 @@ public class BinarySortTreeTest {
 	}
 	
 	public static void test3() {
-		BinarySortTree bt = new BinarySortTree(8, 8);
+		BinarySortTree bt = new BinarySortTree();
 		bt.insert(4, 4);
 		bt.insert(2, 2);
 		bt.insert(3, 3);
