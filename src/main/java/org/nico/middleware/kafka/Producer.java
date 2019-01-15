@@ -5,9 +5,13 @@ import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Producer {
 
+    private final static Logger logger = LoggerFactory.getLogger(Producer.class); 
+    
     private final KafkaProducer<String, String> producer;
     
     private final String topic;
@@ -26,8 +30,8 @@ public class Producer {
     }
     
     public void send(String message) {
-        producer.send(new ProducerRecord<String, String>(topic, "hi", message));
-        System.out.println("send success：" + message);
+        producer.send(new ProducerRecord<String, String>(topic, "nico", message));
+        logger.info("Sended message：{}", message);
     }
     
 }
