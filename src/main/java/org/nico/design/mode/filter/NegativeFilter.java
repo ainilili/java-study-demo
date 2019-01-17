@@ -2,7 +2,7 @@ package org.nico.design.mode.filter;
 
 import java.util.List;
 
-public class PositiveFilter extends AbstractFilter<Integer>{
+public class NegativeFilter extends AbstractFilter<Integer>{
 
     @Override
     public void filter(List<Integer> list) {
