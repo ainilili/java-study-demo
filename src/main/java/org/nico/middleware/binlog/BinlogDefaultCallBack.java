@@ -16,6 +16,7 @@ public class BinlogDefaultCallBack implements BinlogCallBack{
 
     @Override
     public void onInsert(WriteRowsEventData event) {
+        System.out.println(event.getIncludedColumns());
         System.out.println("Insert Data:" + event.getRows().stream().map(a -> { 
             return Arrays.asList(a).stream().map(s -> {return parseValue(s);}).collect(Collectors.toList());
         }).collect(Collectors.toList()));
@@ -23,6 +24,8 @@ public class BinlogDefaultCallBack implements BinlogCallBack{
 
     @Override
     public void onUpdate(UpdateRowsEventData event) {
+        System.out.println(event.getIncludedColumns());
+        System.out.println(event.getIncludedColumnsBeforeUpdate());
         System.out.println("Update Data：" + event.getRows().stream().map(a -> { 
            Map<Object, Object> map = new HashMap<>();
            Serializable[] keys = a.getKey();
@@ -36,6 +39,7 @@ public class BinlogDefaultCallBack implements BinlogCallBack{
 
     @Override
     public void onDelete(DeleteRowsEventData event) {
+        System.out.println(event.getIncludedColumns());
         System.out.println("Delete Data:" + event.getRows().stream().map(a -> { 
             return Arrays.asList(a).stream().map(s -> {return parseValue(s);}).collect(Collectors.toList());
         }).collect(Collectors.toList()));
