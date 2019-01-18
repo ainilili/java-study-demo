@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.junit.Test;
+import org.nico.middleware.binlog.BinlogClient;
+import org.nico.middleware.binlog.BinlogDefaultCallBack;
+import org.nico.middleware.binlog.BinlogDefaultListener;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.BinaryLogClient.EventListener;
@@ -13,6 +16,7 @@ import com.github.shyiko.mysql.binlog.BinaryLogFileReader;
 import com.github.shyiko.mysql.binlog.event.Event;
 import com.github.shyiko.mysql.binlog.event.GtidEventData;
 import com.github.shyiko.mysql.binlog.event.QueryEventData;
+import com.github.shyiko.mysql.binlog.event.RowsQueryEventData;
 import com.github.shyiko.mysql.binlog.event.TableMapEventData;
 import com.github.shyiko.mysql.binlog.event.UpdateRowsEventData;
 import com.github.shyiko.mysql.binlog.event.WriteRowsEventData;
@@ -60,6 +64,9 @@ public class BinlogTest {
                 case QUERY:
                     System.out.println(((QueryEventData) event.getData()));
                     break;
+                case ROWS_QUERY:
+                    System.out.println(((RowsQueryEventData) event.getData()));
+                    break;
                 case TABLE_MAP:
                     System.out.println(((TableMapEventData) event.getData()));
                     break;
@@ -85,9 +92,18 @@ public class BinlogTest {
                 default:
                     break;
                 }
-                System.out.println(event.getHeader().getEventType());
+//                System.out.println(event.getHeader().getEventType());
             }
         });
         client.connect();
+    }
+    
+    @Test
+    public void test3() throws IOException {
+        new BinlogClient("localhost", 3306, "root", "root")
+        .addCompatibilityMode(EventDeserializer.CompatibilityMode.DATE_AND_TIME_AS_LONG,
+                EventDeserializer.CompatibilityMode.CHAR_AND_BINARY_AS_BYTE_ARRAY)
+        .addListener(new BinlogDefaultListener(new BinlogDefaultCallBack()))
+        .connect();
     }
 }
