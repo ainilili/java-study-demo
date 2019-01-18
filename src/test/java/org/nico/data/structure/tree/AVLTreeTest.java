@@ -2,9 +2,12 @@ package org.nico.data.structure.tree;
 
 import java.util.Random;
 
+import org.junit.Test;
+
 public class AVLTreeTest {
 
-	public static void main(String[] args) {
+    @Test
+    public void test() {
 		
 		int count = 30;
 		int root = count/2;

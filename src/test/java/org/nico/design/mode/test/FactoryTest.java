@@ -1,4 +1,8 @@
-package org.nico.design.mode.factory;
+package org.nico.design.mode.test;
+
+import org.junit.Test;
+import org.nico.design.mode.factory.Armament;
+import org.nico.design.mode.factory.ArmamentFactory;
 
 /** 
  * 
@@ -6,9 +10,10 @@ package org.nico.design.mode.factory;
  * @email ainililia@163.com
  */
 
-public class Test {
+public class FactoryTest {
 
-	public static void main(String[] args) {
+    @Test
+    public void test() {
 		
 		Armament armament = ArmamentFactory.getArmament("airplane");
 		System.out.println(armament.name());

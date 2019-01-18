@@ -2,6 +2,8 @@ package org.nico.data.structure.juc;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import org.junit.Test;
  
 /**
  *
@@ -9,9 +11,10 @@ import java.util.concurrent.TimeUnit;
  * @email ainililia@163.com
  */
  
-public class Test {
- 
-    public static void main(String[] args) throws InterruptedException {
+public class CountDownLatchDefinedTest {
+    
+    @Test
+    public void test() throws InterruptedException {
         int sum = 0;
         int count = 1000;
         int loop = 1000;

@@ -1,8 +1,12 @@
-package org.nico.design.mode.single;
+package org.nico.design.mode.test;
 
-public class Test {
+import org.junit.Test;
+import org.nico.design.mode.single.Single;
 
-	public static void main(String[] args) {
+public class SingleTest {
+
+    @Test
+    public void test() {
 		
 		Single single = Single.getInstance();
 		

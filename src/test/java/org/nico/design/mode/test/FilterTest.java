@@ -1,12 +1,18 @@
-package org.nico.design.mode.filter;
+package org.nico.design.mode.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Test {
+import org.junit.Test;
+import org.nico.design.mode.filter.AbstractFilter;
+import org.nico.design.mode.filter.EvenFilter;
+import org.nico.design.mode.filter.NegativeFilter;
 
-    public static void main(String[] args) {
+public class FilterTest {
+
+    @Test
+    public void test() {
         
         AbstractFilter<Integer> evenFilter = new EvenFilter();
         AbstractFilter<Integer> negativeFilter = new NegativeFilter();

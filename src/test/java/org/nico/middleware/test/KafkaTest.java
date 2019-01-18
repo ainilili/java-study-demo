@@ -1,18 +1,23 @@
-package org.nico.middleware.kafka;
+package org.nico.middleware.test;
 
 import java.util.Scanner;
 
-public class Test {
+import org.junit.Test;
+import org.nico.middleware.kafka.Consumer;
+import org.nico.middleware.kafka.Producer;
+
+public class KafkaTest {
 
     static String topic = "test";
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
 
         new Thread(() ->  {
             Scanner in = null;
             try {
                 in = new Scanner(System.in);
-                Producer producer = new Producer(topic, args);
+                Producer producer = new Producer(topic, null);
                 while(in.hasNext()) {
                     producer.send(in.next());
                 }

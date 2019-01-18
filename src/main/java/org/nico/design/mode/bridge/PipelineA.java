@@ -17,7 +17,8 @@ public class PipelineA extends Pipeline{
 		new Thread(){
 			@Override
 			public void run(){
-				while(true){
+			    int count = 5;
+				while(count -- > 0){
 					try {
 						Thread.sleep(1000L/speed);
 						work.process(speed);

@@ -1,10 +1,16 @@
-package org.nico.design.mode.adapter;
+package org.nico.design.mode.test;
 
 import java.util.Scanner;
 
-public class Test {
+import org.junit.Test;
+import org.nico.design.mode.adapter.RobotAlpha;
+import org.nico.design.mode.adapter.RobotAlphaAdapter;
+import org.nico.design.mode.adapter.RobotBetaProduct;
 
-	public static void main(String[] args) {
+public class AdapterTest {
+    
+    @Test
+	public void test() {
 		
 		RobotAlpha alpha = new RobotAlphaAdapter(new RobotBetaProduct());
 		Scanner sc = new Scanner(System.in);

@@ -2,13 +2,12 @@ package org.nico.data.structure.tree;
 
 import java.util.Random;
 
+import org.junit.Test;
+
 public class BinarySortTreeTest {
 
-	public static void main(String[] args) {
-		test3();
-	}
-
-	public static void test1() {
+	@Test
+	public void test1() {
 		int count = 50;
 		BinarySortTree bt = new BinarySortTree();
 		Random random = new Random();
@@ -36,10 +35,9 @@ public class BinarySortTreeTest {
 		System.out.println("该树结点数：" + bt.size());
 	}
 
-
-	public static void test2() {
+	@Test
+	public void test2() {
 		int count = 10;
-		int root = count/2;
 		BinarySortTree bt = new BinarySortTree();
 
 		int loop = count;
@@ -75,7 +73,8 @@ public class BinarySortTreeTest {
 		System.out.println(bt);
 	}
 	
-	public static void test3() {
+	@Test
+	public void test3() {
 		BinarySortTree bt = new BinarySortTree();
 		bt.insert(4, 4);
 		bt.insert(2, 2);

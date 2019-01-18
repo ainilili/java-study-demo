@@ -50,6 +50,21 @@
 		    <artifactId>logback-access</artifactId>
 		    <version>1.1.7</version>
 		</dependency>
+		
+		<!-- binlog connector -->
+		<dependency>
+		    <groupId>com.github.shyiko</groupId>
+		    <artifactId>mysql-binlog-connector-java</artifactId>
+		    <version>0.17.0</version>
+		</dependency>
+		
+		<!-- junit -->
+		<dependency>
+		    <groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <version>4.11</version>
+		    <scope>test</scope>
+		</dependency>
     </dependencies>
     
 	<build>

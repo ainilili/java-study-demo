@@ -1,4 +1,8 @@
-package org.nico.design.mode.builder;
+package org.nico.design.mode.test;
+
+import org.nico.design.mode.builder.Chair;
+import org.nico.design.mode.builder.Room;
+import org.nico.design.mode.builder.Table;
 
 /** 
  * 
@@ -6,7 +10,7 @@ package org.nico.design.mode.builder;
  * @email ainililia@163.com
  */
 
-public class Test {
+public class BuilderTest {
 
 	public static void main(String[] args) {
 		Room room = new Room();
