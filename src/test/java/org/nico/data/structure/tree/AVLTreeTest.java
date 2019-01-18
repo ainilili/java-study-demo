@@ -10,7 +10,6 @@ public class AVLTreeTest {
     public void test() {
 		
 		int count = 30;
-		int root = count/2;
 		AVLTree bt = new AVLTree();
 		Random random = new Random();
 

@@ -25,8 +25,6 @@ public class AVLTree extends BinarySortTree{
 
 	class ANode extends Node{
 
-		private int height = -1;
-		
 		public ANode(int index, Object value, Node parent) {
 			super(index, value, parent);
 		}
