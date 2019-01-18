@@ -99,11 +99,12 @@ public class BinlogTest {
     }
     
     @Test
-    public void test3() throws IOException {
+    public void test3() {
         new BinlogClient("localhost", 3306, "root", "root")
         .addCompatibilityMode(EventDeserializer.CompatibilityMode.DATE_AND_TIME_AS_LONG,
                 EventDeserializer.CompatibilityMode.CHAR_AND_BINARY_AS_BYTE_ARRAY)
         .addListener(new BinlogDefaultListener(new BinlogDefaultCallBack()))
-        .connect();
+        .keepAliveInterval(100)
+        .start();
     }
 }

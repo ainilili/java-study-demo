@@ -2,6 +2,8 @@ package org.nico.middleware.binlog;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.event.Event;
@@ -15,8 +17,14 @@ public class BinlogClient extends BinaryLogClient{
     protected EventDeserializer eventDeserializer = new EventDeserializer();
 
     protected List<CompatibilityMode> compatibilityModes;
-    
+
     protected BinlogListener listener;
+    
+    protected long keepAliveInterval = -1;
+
+    protected long heartbeatInterval = -1;
+    
+    protected long timeout = -1;
 
     public BinlogClient(String hostname, int port, String schema, String username, String password) {
         super(hostname, port, schema, username, password);
@@ -39,7 +47,7 @@ public class BinlogClient extends BinaryLogClient{
         this.setEventDeserializer(eventDeserializer);
         return this;
     }
-    
+
     public BinlogClient addListener(BinlogListener listener) {
         this.listener = listener;
         this.registerEventListener(new EventListener() {
@@ -51,10 +59,34 @@ public class BinlogClient extends BinaryLogClient{
         return this;
     }
     
-    public void connect(){
+    public BinlogClient keepAliveInterval(long keepAliveInterval) {
+        this.keepAliveInterval = keepAliveInterval;
+        return this;
+    }
+
+    public BinlogClient heartbeatInterval(long heartbeatInterval) {
+        this.heartbeatInterval = heartbeatInterval;
+        return this;
+    }
+
+    public BinlogClient timeout(long timeout) {
+        this.timeout = timeout;
+        return this;
+    }
+
+    public void start(long keepAliveInterval, long heartbeatInterval, long timeout){
         try {
-            super.connect();
-        } catch (AuthenticationException e) {
+            if(keepAliveInterval >= 0)
+                super.setKeepAliveInterval(keepAliveInterval);
+            if(heartbeatInterval >= 0)
+                super.setHeartbeatInterval(heartbeatInterval);
+            if(timeout >= 0)
+                super.connect(timeout);
+            else
+                super.connect();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }catch (AuthenticationException e) {
             e.printStackTrace();
         }catch (ServerException e) {
             e.printStackTrace();
@@ -63,16 +95,8 @@ public class BinlogClient extends BinaryLogClient{
         }
     }
     
-    public void connectGuaranteed() {
-        try {
-            super.connect();
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-        }catch (ServerException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-        
+    public void start() {
+        start(keepAliveInterval, heartbeatInterval, timeout);
     }
+    
 }
