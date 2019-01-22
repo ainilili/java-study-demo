@@ -1,4 +1,4 @@
-package org.nico.java8.lambda;
+package org.nico.java8.stream;
 
 import java.util.Collections;
 import java.util.Comparator;
