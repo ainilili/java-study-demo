@@ -1,5 +1,6 @@
 package org.nico.sort.test;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,7 +61,7 @@ public class MergeSortTest {
     
     @Test
     public void testAccuracy() {
-        int count = 100 * 100000;
+        int count = 100 * 10000;
         int[] array = new int[count];
         int[] array1 = new int[count];
         int[] array2 = new int[count];
@@ -93,7 +94,6 @@ public class MergeSortTest {
         sort.sort(array1);
         end = System.currentTimeMillis();
         System.out.println("nico：" + (end - start));
-        
         
         
     }
