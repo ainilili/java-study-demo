@@ -1,0 +1,46 @@
+package org.nico.sort.test;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+import org.junit.Test;
+import org.nico.sort.AbstractSort;
+import org.nico.sort.BubbleSort;
+import org.nico.sort.MergeSort;
+import org.nico.sort.SelectionSort;
+
+public class AllTest {
+
+    
+    @Test
+    public void test() {
+
+//        AbstractSort sort = new MergeSort();
+//        AbstractSort sort = new BubbleSort();
+        AbstractSort sort = new SelectionSort();
+        
+        int[] array = {1,3,2,6,5,8,7,13,12,11};
+        Arrays.stream(sort.sort(array)).forEach(System.out::println);
+
+        array = new int[]{1};
+        Arrays.stream(sort.sort(array)).forEach(System.out::println);
+
+        array = new int[]{3,1};
+        Arrays.stream(sort.sort(array)).forEach(System.out::println);
+
+        array = new int[]{3,1,2};
+        Arrays.stream(sort.sort(array)).forEach(System.out::println);
+        
+        int index = 0;
+        int count = 100 * 1000;
+        array = new int[count];
+        while(count -- > 0) {
+            array[index ++] = count;
+        }
+        
+        long start = System.currentTimeMillis();
+        sort.sort(array);
+        long end = System.currentTimeMillis();
+        System.out.println("time-consuming：" + (end - start) + "ms");
+    }
+}
