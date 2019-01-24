@@ -9,6 +9,7 @@ import org.nico.sort.BubbleSort;
 import org.nico.sort.InsertionSort;
 import org.nico.sort.MergeSort;
 import org.nico.sort.SelectionSort;
+import org.nico.sort.ShellSort;
 
 public class AllTest {
 
@@ -18,7 +19,8 @@ public class AllTest {
 
 //        AbstractSort sort = new MergeSort();
 //        AbstractSort sort = new BubbleSort();
-        AbstractSort sort = new InsertionSort();
+//        AbstractSort sort = new InsertionSort();
+        AbstractSort sort = new ShellSort();
         
         int[] array = {1,3,2,6,5,8,7,13,12,11};
         Arrays.stream(sort.sort(array)).forEach(System.out::println);
@@ -33,7 +35,7 @@ public class AllTest {
         Arrays.stream(sort.sort(array)).forEach(System.out::println);
         
         int index = 0;
-        int count = 100 * 1000;
+        int count = 100;
         array = new int[count];
         while(count -- > 0) {
             array[index ++] = count;
