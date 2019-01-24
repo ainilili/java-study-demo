@@ -24,7 +24,7 @@ public class QuickSortTest {
 //        }
 
         long start = System.currentTimeMillis();
-        Arrays.sort(array);
+        sort.sort(array);
         
         long end = System.currentTimeMillis();
         System.out.println("time-consuming：" + (end - start) + "ms");
