@@ -5,7 +5,6 @@ public class QuickSort extends AbstractSort{
     @Override
     public int[] sort(int[] array) {
         quickSort(array, 0, array.length - 1);
-        print(array);
         return array;
     }
 
@@ -20,7 +19,6 @@ public class QuickSort extends AbstractSort{
             swap(array, l, r);
         }
         swap(array, left, l);
-        System.out.println(l + " - " + r);
         quickSort(array, left, l - 1);
         quickSort(array, l + 1, right);
     }

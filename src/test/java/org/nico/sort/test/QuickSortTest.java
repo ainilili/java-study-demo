@@ -1,5 +1,7 @@
 package org.nico.sort.test;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.nico.sort.AbstractSort;
 import org.nico.sort.QuickSort;
@@ -22,7 +24,8 @@ public class QuickSortTest {
 //        }
 
         long start = System.currentTimeMillis();
-        sort.sort(array);
+        Arrays.sort(array);
+        
         long end = System.currentTimeMillis();
         System.out.println("time-consuming：" + (end - start) + "ms");
 

@@ -8,6 +8,7 @@ import org.nico.sort.AbstractSort;
 import org.nico.sort.BubbleSort;
 import org.nico.sort.InsertionSort;
 import org.nico.sort.MergeSort;
+import org.nico.sort.QuickSort;
 import org.nico.sort.SelectionSort;
 import org.nico.sort.ShellSort;
 
@@ -21,7 +22,8 @@ public class AllTest {
 //        AbstractSort sort = new BubbleSort();
 //        AbstractSort sort = new SelectionSort();
 //        AbstractSort sort = new InsertionSort();
-        AbstractSort sort = new ShellSort();
+//        AbstractSort sort = new ShellSort();
+        AbstractSort sort = new QuickSort();
         
         int[] array = {1,3,2,6,5,8,7,13,12,11};
         Arrays.stream(sort.sort(array)).forEach(System.out::println);
