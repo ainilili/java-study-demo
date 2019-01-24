@@ -19,6 +19,7 @@ public class AllTest {
 
 //        AbstractSort sort = new MergeSort();
 //        AbstractSort sort = new BubbleSort();
+//        AbstractSort sort = new SelectionSort();
 //        AbstractSort sort = new InsertionSort();
         AbstractSort sort = new ShellSort();
         
@@ -35,7 +36,7 @@ public class AllTest {
         Arrays.stream(sort.sort(array)).forEach(System.out::println);
         
         int index = 0;
-        int count = 100;
+        int count = 100 * 10000;
         array = new int[count];
         while(count -- > 0) {
             array[index ++] = count;

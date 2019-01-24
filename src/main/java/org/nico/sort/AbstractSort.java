@@ -9,21 +9,36 @@ public abstract class AbstractSort {
      * @return sorted array
      */
     public abstract int[] sort(int[] array);
-    
+
     protected int halfIndex(int[] array, int start, int end) {
         int diff = end - start;
         if(diff < 1) return -1;
         return (start + ((diff + 1) >>> 1)) - 1;
     }
-    
+
     protected int[] swapAsc(int[] array, int first, int last) {
         int a = array[first];
         int b = array[last];
         if(a > b) {
-           array[last] = a;
-           array[first] = b;
+            array[last] = a;
+            array[first] = b;
         }
         return array;
     }
+
+    protected int[] swap(int[] array, int first, int last) {
+        int a = array[first];
+        int b = array[last];
+        array[last] = a;
+        array[first] = b;
+        return array;
+    }
     
+    protected void print(int[] array) {
+        for(int index = 0; index < array.length; index ++) {
+            System.out.print(array[index] + " ");
+        }
+        System.out.println();
+    }
+
 }

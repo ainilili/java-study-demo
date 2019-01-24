@@ -15,7 +15,7 @@ public class ShellSortTest {
 
         //        int[] array = {5,3,7,9,1,6,4,8,2};
         //        int[] array = {49,38,65,97,76,13,27,49,55,04};
-        int[] array = {12,11,10,9,8,7,6,5,4,3,2,1};
+        int[] array = {15,14,13,12,11,10,9,8,7,6,5,4,3,2,1};
         //        Arrays.stream(sort.sort(array)).forEach(System.out::println);
 
 
