@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 import org.nico.sort.AbstractSort;
 import org.nico.sort.BubbleSort;
+import org.nico.sort.BucketSort;
 import org.nico.sort.CountingSort;
 import org.nico.sort.HeapSort;
 import org.nico.sort.InsertionSort;
@@ -27,7 +28,8 @@ public class AllTest {
 //        AbstractSort sort = new ShellSort();
 //        AbstractSort sort = new QuickSort();
 //        AbstractSort sort = new CountingSort();
-        AbstractSort sort = new HeapSort();
+//        AbstractSort sort = new HeapSort();
+        AbstractSort sort = new BucketSort();
         
         int[] array = {1,3,2,6,5,8,7,13,12,11};
         Arrays.stream(sort.sort(array)).forEach(System.out::println);
