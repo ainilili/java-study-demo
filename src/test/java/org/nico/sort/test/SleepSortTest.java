@@ -1,5 +1,6 @@
 package org.nico.sort.test;
 
+
 import org.junit.Test;
 import org.nico.sort.AbstractSort;
 import org.nico.sort.SleepSort;

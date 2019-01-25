@@ -2,7 +2,6 @@ package org.nico.middleware.binlog;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
