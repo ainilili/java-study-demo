@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 import org.nico.sort.AbstractSort;
 import org.nico.sort.BubbleSort;
+import org.nico.sort.CountingSort;
 import org.nico.sort.InsertionSort;
 import org.nico.sort.MergeSort;
 import org.nico.sort.QuickSort;
@@ -23,7 +24,8 @@ public class AllTest {
 //        AbstractSort sort = new SelectionSort();
 //        AbstractSort sort = new InsertionSort();
 //        AbstractSort sort = new ShellSort();
-        AbstractSort sort = new QuickSort();
+//        AbstractSort sort = new QuickSort();
+        AbstractSort sort = new CountingSort();
         
         int[] array = {1,3,2,6,5,8,7,13,12,11};
         Arrays.stream(sort.sort(array)).forEach(System.out::println);
@@ -48,5 +50,9 @@ public class AllTest {
         sort.sort(array);
         long end = System.currentTimeMillis();
         System.out.println("time-consuming：" + (end - start) + "ms");
+        
+        for(int i = 0; i< 100; i ++) {
+            System.out.print(array[i] +  " ");
+        }
     }
 }
