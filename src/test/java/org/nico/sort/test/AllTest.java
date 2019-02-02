@@ -12,6 +12,7 @@ import org.nico.sort.HeapSort;
 import org.nico.sort.InsertionSort;
 import org.nico.sort.MergeSort;
 import org.nico.sort.QuickSort;
+import org.nico.sort.RadixSort;
 import org.nico.sort.SelectionSort;
 import org.nico.sort.ShellSort;
 
@@ -29,7 +30,8 @@ public class AllTest {
 //        AbstractSort sort = new QuickSort();
 //        AbstractSort sort = new CountingSort();
 //        AbstractSort sort = new HeapSort();
-        AbstractSort sort = new BucketSort();
+//        AbstractSort sort = new BucketSort();
+        AbstractSort sort = new RadixSort();
         
         int[] array = {1,3,2,6,5,8,7,13,12,11};
         Arrays.stream(sort.sort(array)).forEach(System.out::println);

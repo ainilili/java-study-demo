@@ -1,5 +1,7 @@
 package org.nico.sort;
 
+import org.nico.sort.RadixSort.Bucket;
+
 public class BucketSort extends AbstractSort{
 
     @Override
@@ -47,13 +49,15 @@ public class BucketSort extends AbstractSort{
                     buckets[hash] = newBucket;
                 }else {
                     boolean d = false;
+                    
                     while(target.n != null) {
-                        target = target.n;
-                        if(target.v > array[index]) {
-                            newBucket.n = target;
-                            buckets[hash] = newBucket;
+                        if(target.n.v > array[index]) {
+                            newBucket.n = target.n;
+                            target.n = newBucket;
                             d = true;
                             break;
+                        }else {
+                            target = target.n;
                         }
                     }
                     if(d) continue;
