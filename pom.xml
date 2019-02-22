@@ -18,56 +18,69 @@
 		<ourbatis-spring-boot.version>1.0.0</ourbatis-spring-boot.version>
 		<java.test.compiler.argument>${java.compiler.argument}</java.test.compiler.argument>
 	</properties>
-    
-    <dependencies>
-    	<!-- kafka -->
-        <dependency>
-		    <groupId>org.apache.kafka</groupId>
-		    <artifactId>kafka-clients</artifactId>
-		    <version>2.1.0</version>
-		</dependency>
-		
-		<!-- netty -->
+
+	<dependencies>
+		<!-- kafka -->
 		<dependency>
-		    <groupId>io.netty</groupId>
-		    <artifactId>netty-all</artifactId>
-		    <version>4.1.29.Final</version>
-		</dependency>
-		
-		<!-- logback -->
-		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-api</artifactId>
-		    <version>1.7.21</version>
-		</dependency>
-		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-classic</artifactId>
-		    <version>1.1.7</version>
-		</dependency>
-		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-access</artifactId>
-		    <version>1.1.7</version>
-		</dependency>
-		
-		<!-- binlog connector -->
-		<dependency>
-		    <groupId>com.github.shyiko</groupId>
-		    <artifactId>mysql-binlog-connector-java</artifactId>
-		    <version>0.17.0</version>
-		</dependency>
-		
-		<!-- junit -->
-		<dependency>
-		    <groupId>junit</groupId>
-		    <artifactId>junit</artifactId>
-		    <version>4.11</version>
-		    <scope>test</scope>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>2.1.0</version>
 		</dependency>
 
-    </dependencies>
-    
+		<!-- netty -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.29.Final</version>
+		</dependency>
+
+		<!-- logback -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+
+		<!-- binlog connector -->
+		<dependency>
+			<groupId>com.github.shyiko</groupId>
+			<artifactId>mysql-binlog-connector-java</artifactId>
+			<version>0.17.0</version>
+		</dependency>
+
+		<!-- junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- mysql connector -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.1.14-preview_1</version>
+		</dependency>
+
+	</dependencies>
+
 	<build>
 		<pluginManagement>
 			<plugins>
