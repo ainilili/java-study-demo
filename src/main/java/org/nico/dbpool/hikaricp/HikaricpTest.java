@@ -1,4 +1,4 @@
-package org.nico.dbpool.nico;
+package org.nico.dbpool.hikaricp;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,22 +11,23 @@ import java.util.concurrent.TimeUnit;
 
 import javax.sql.DataSource;
 
-public class NicoPoolTest {
+import com.zaxxer.hikari.HikariDataSource;
+
+public class HikaricpTest {
 
     static ThreadPoolExecutor tpe = new ThreadPoolExecutor(1000, 1000, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
     
     public static void main(String[] args) throws SQLException, InterruptedException {
         long start = System.currentTimeMillis();
-        NicoDataSource dataSource = new NicoDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&transformedBitIsBoolean=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai");
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&transformedBitIsBoolean=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai");
         dataSource.setUsername("root");
         dataSource.setPassword("root");
-        dataSource.setDriver("com.mysql.cj.jdbc.Driver");
-        dataSource.setMax(100);
-        dataSource.setInit(100);
-        dataSource.setWaitTime(Long.MAX_VALUE);
-        dataSource.setMin(100);
-        
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setMaximumPoolSize(100);
+        dataSource.setMinimumIdle(100);
+        dataSource.setIdleTimeout(6000000);
+
         test(dataSource, 10000);
         System.out.println(System.currentTimeMillis() - start + " ms");
     }
@@ -37,11 +38,10 @@ public class NicoPoolTest {
         for(int i = 0; i < count; i ++) {
             tpe.execute(() -> {
                 try {
-                    NicoConnection connection = (NicoConnection) dataSource.getConnection();
+                    Connection connection = dataSource.getConnection();
                     Statement s = connection.createStatement();
                     ResultSet rs = s.executeQuery("select * from test limit 0,1");
                     rs.next();
-//                    System.out.println("连接ID " + connection.getId());
                     connection.close();
                 }catch(Exception e) {
                 }finally {
@@ -50,7 +50,7 @@ public class NicoPoolTest {
             });
         }
         cdl.await();
-        
         tpe.shutdown();
     }
+    
 }

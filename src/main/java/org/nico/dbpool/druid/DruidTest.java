@@ -18,7 +18,7 @@ public class DruidTest {
     static ThreadPoolExecutor tpe = new ThreadPoolExecutor(1000, 1000, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
     
     public static void main(String[] args) throws SQLException, InterruptedException {
-        
+        long start = System.currentTimeMillis();
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUrl("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&transformedBitIsBoolean=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai");
         dataSource.setUsername("root");
@@ -30,10 +30,11 @@ public class DruidTest {
         dataSource.setMinIdle(100);
         
         test(dataSource, 10000);
+        System.out.println(System.currentTimeMillis() - start + " ms");
     }
     
     public static void test(DataSource dataSource, int count) throws SQLException, InterruptedException {
-        long start = System.currentTimeMillis();
+        
         CountDownLatch cdl = new CountDownLatch(count);
         for(int i = 0; i < count; i ++) {
             tpe.execute(() -> {
@@ -50,7 +51,7 @@ public class DruidTest {
             });
         }
         cdl.await();
-        System.out.println(System.currentTimeMillis() - start + " ms");
+        
         tpe.shutdown();
     }
     
