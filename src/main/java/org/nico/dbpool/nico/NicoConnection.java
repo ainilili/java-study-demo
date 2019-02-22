@@ -104,8 +104,8 @@ public class NicoConnection implements Connection{
     }
 
     @Override
-    public boolean isClosed() {
-        return used == false;
+    public boolean isClosed() throws SQLException {
+        return used == false || connection.isClosed();
     }
 
     @Override

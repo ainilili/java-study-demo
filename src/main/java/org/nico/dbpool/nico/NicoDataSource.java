@@ -3,6 +3,9 @@ package org.nico.dbpool.nico;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.sql.DataSource;
 
@@ -27,24 +30,41 @@ public class NicoDataSource extends NicoDataSourceWrapper implements DataSource{
     private NicoConnectionPool pool;
     
     private volatile boolean isInit;
+    private volatile boolean inited;
+    
+    
+    final Lock initLock = new ReentrantLock();
+    final Condition initCondition = initLock.newCondition();
     
     @Override
     public Connection getConnection() throws SQLException {
         try {
+            initLock.lock();
             init();
+            if(! inited) {
+                initCondition.await();
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            initLock.unlock();
         }
         
+        NicoConnection cn = null;
         if(pool.hasLeisure()) {
-            return pool.getConnection(waitTime);
+            cn = pool.getConnection(waitTime);
+        }else if(! pool.isFull()) {
+            cn = pool.addUsedConnection(createNativeConnection(pool));
+        }else {
+            cn = pool.getConnection(waitTime);
         }
         
-        if(! pool.isFull()) {
-            return pool.addUsedConnection(createNativeConnection(pool));
+        if(cn.isClosed()) {
+            return pool.putUsedConnection(createNativeConnection(pool), cn.getId());
         }
-        
-        return pool.getConnection(waitTime);
+        return cn;
     }
 
     @Override
@@ -65,6 +85,8 @@ public class NicoDataSource extends NicoDataSourceWrapper implements DataSource{
         for(int i = 0; i < init; i ++) {
             pool.addUnUsedConnection(createNativeConnection(pool));
         }
+        inited = true;
+        initCondition.signalAll();
     }
     
     public NicoConnectionPool getPool() {

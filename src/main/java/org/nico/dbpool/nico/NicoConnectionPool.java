@@ -47,7 +47,6 @@ public class NicoConnectionPool {
     }
 
     public NicoConnection getConnection(long wait) {
-       
         try {
             leisureLock.lock();
             if(! leisureIds.isEmpty()) {
@@ -77,7 +76,18 @@ public class NicoConnectionPool {
         addLock.lock();
         Integer id = poolCursor.incrementAndGet();
         pools[id] = nc;
+        nc.setUsed(true);
         nc.setId(id);
+        addLock.unlock();
+        return nc;
+    }
+    
+    public NicoConnection putUsedConnection(NicoConnection nc, Integer id) {
+        addLock.lock();
+        pools[id] = nc;
+        nc.setUsed(true);
+        nc.setId(id);
+        leisureIds.add(id);
         addLock.unlock();
         return nc;
     }
@@ -92,7 +102,7 @@ public class NicoConnectionPool {
         addLock.unlock();
         return nc;
     }
-
+    
     public void addToLeisureIds(NicoConnection nc) {
         try {
             leisureLock.lock();
@@ -106,4 +116,13 @@ public class NicoConnectionPool {
         
     }
 
+    public NicoConnection[] getPools() {
+        return pools;
+    }
+
+    public void setPools(NicoConnection[] pools) {
+        this.pools = pools;
+    }
+    
+   
 }
