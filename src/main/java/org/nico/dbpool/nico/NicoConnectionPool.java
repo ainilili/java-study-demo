@@ -2,8 +2,6 @@ package org.nico.dbpool.nico;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -20,50 +18,57 @@ public class NicoConnectionPool {
 
     private List<Integer> leisureIds;
 
-    private Lock addLock;
-
-    private Lock leisureIndicesLock;
-
-    private Condition getConnectionCondition;
-
-    private Queue<NicoConnection> requestQueue;
+    final Lock addLock = new ReentrantLock();
+    final Lock leisureLock = new ReentrantLock();
+    
+    final Condition leisureCondition = leisureLock.newCondition();  
 
     public NicoConnectionPool(int max) {
         maxSize = max;
         pools = new NicoConnection[max];
         leisureIds = new ArrayList<Integer>();
-        poolCursor = new AtomicInteger(0);
-        leisureIndicesLock = new ReentrantLock();
-        addLock = new ReentrantLock();
-        getConnectionCondition = leisureIndicesLock.newCondition();
-        requestQueue = new ConcurrentLinkedQueue<NicoConnection>();
+        poolCursor = new AtomicInteger(-1);
+    }
+
+    public Lock getLeisureLock() {
+        return leisureLock;
     }
 
     public boolean isFull() {
-        return poolCursor.get() == maxSize;
+        return poolCursor.get() == maxSize - 1;
     }
 
     public boolean hasLeisure() {
         return leisureIds.size() > 0;
     }
 
+    public Condition getLeisureCondition() {
+        return leisureCondition;
+    }
+
     public NicoConnection getConnection(long wait) {
-        Integer index = leisureIds.get(0);
-        if(index != null) {
-            NicoConnection nc = pools[index];
-            if(nc.isClosed()) {
-                nc.setUsed(true);
-                leisureIds.remove(nc.getId());
-                return nc;
-            }
-        }
+       
         try {
-            long time = getConnectionCondition.awaitNanos(wait);
+            leisureLock.lock();
+            if(! leisureIds.isEmpty()) {
+                Integer index = leisureIds.get(0);
+                if(index != null) {
+                    NicoConnection nc = pools[index];
+                    if(nc.isClosed()) {
+                        nc.setUsed(true);
+                        leisureIds.remove(nc.getId());
+                        return nc;
+                    }
+                }
+            }
+            long time = leisureCondition.awaitNanos(wait);
             if(time > 0) {
                 return getConnection(time);
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            leisureLock.unlock();
         }
         throw new RuntimeException("获取连接超时");
     }
@@ -83,21 +88,22 @@ public class NicoConnectionPool {
         pools[id] = nc;
         nc.setUsed(false);
         nc.setId(id);
+        leisureIds.add(id);
         addLock.unlock();
         return nc;
     }
 
-    public Condition getGetConnectionCondition() {
-        return getConnectionCondition;
-    }
-
-    public void setGetConnectionCondition(Condition getConnectionCondition) {
-        this.getConnectionCondition = getConnectionCondition;
-    }
-
     public void addToLeisureIds(NicoConnection nc) {
-        leisureIds.add(nc.getId());
-        getConnectionCondition.signal();
+        try {
+            leisureLock.lock();
+            leisureIds.add(nc.getId());
+            leisureCondition.signal();   
+        }catch(Exception e) {
+            e.printStackTrace();
+        }finally {
+            leisureLock.unlock();
+        }
+        
     }
 
 }
