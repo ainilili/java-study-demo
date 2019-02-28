@@ -1,7 +1,5 @@
 package org.nico.sort;
 
-import org.nico.sort.RadixSort.Bucket;
-
 public class BucketSort extends AbstractSort{
 
     @Override
