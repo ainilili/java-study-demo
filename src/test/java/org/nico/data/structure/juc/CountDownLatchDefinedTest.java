@@ -32,5 +32,6 @@ public class CountDownLatchDefinedTest {
         System.out.println(sum);
         tpe.shutdown();
     }
+    
 }
 

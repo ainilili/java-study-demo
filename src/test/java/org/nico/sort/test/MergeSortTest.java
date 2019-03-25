@@ -36,6 +36,29 @@ public class MergeSortTest {
     }
     
     @Test
+    public void testCompare() {
+        
+        String json1 = "{nico:zhenshuai}";
+        String json2 = "{zhenshuai:nico}";
+        
+        AbstractSort sort = new MergeSort();
+        
+        int[] sort1 = sort.sort(json1.chars().map(c -> c).toArray());
+        int[] sort2 = sort.sort(json2.chars().map(c -> c).toArray());
+        
+        for(int i: sort1) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        for(int i: sort2) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+        
+        System.out.println("json1 == json2 ? " + Arrays.equals(sort1, sort2));
+    }
+    
+    @Test
     public void testAccuracy() {
         int count = 100 * 10000;
         int[] array = new int[count];
