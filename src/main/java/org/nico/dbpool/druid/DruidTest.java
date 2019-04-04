@@ -33,7 +33,7 @@ public class DruidTest {
         System.out.println(System.currentTimeMillis() - start + " ms");
     }
     
-    public static void test(DataSource dataSource, int count) throws SQLException, InterruptedException {
+    public static void test(DruidDataSource dataSource, int count) throws SQLException, InterruptedException {
         
         CountDownLatch cdl = new CountDownLatch(count);
         for(int i = 0; i < count; i ++) {
